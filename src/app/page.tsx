@@ -32,11 +32,11 @@ export default function Home() {
   const [step, setStep] = useState<1 | 2>(1);
 
   return (
-    <main className="relative w-screen h-screen overflow-hidden psy-hue">
+    <main className="relative w-screen vh-100 overflow-hidden psy-hue">
       {/* Background video */}
       {step === 1 ? (
         <video
-          className="absolute inset-0 w-full h-full object-cover video-zoom"
+          className="fixed inset-0 w-full h-full object-cover video-zoom"
           src="/videos/oland1.mp4"
           autoPlay
           muted
@@ -45,7 +45,7 @@ export default function Home() {
         />
       ) : (
         <video
-          className="absolute inset-0 w-full h-full object-cover video-zoom"
+          className="fixed inset-0 w-full h-full object-cover video-zoom"
           src="/videos/poland2.mp4"
           autoPlay
           muted
@@ -58,7 +58,7 @@ export default function Home() {
       <div className="relative z-10 flex flex-col items-center justify-center w-full h-full text-center px-6">
         {step === 1 ? (
           <div className="space-y-10">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-wide neon-text rgb-shift">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-wide neon-text rgb-shift lofi-title floaty">
               POLAND TRIP LOADING <span className="loading-dots"/>
             </h1>
             <button
@@ -71,7 +71,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="space-y-6">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold neon-text rgb-shift">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold neon-text rgb-shift lofi-subtitle floaty">
               <TypingText text="MY PREFERENCE IS: ..... Gdansk!!" />
             </h2>
             <button
@@ -85,10 +85,10 @@ export default function Home() {
       </div>
 
       {/* Overlays: scanlines + vignette + blobs */}
-      <div className="pointer-events-none absolute inset-0 scanlines" />
-      <div className="pointer-events-none absolute inset-0 vignette" />
+      <div className="pointer-events-none fixed inset-0 scanlines" />
+      <div className="pointer-events-none fixed inset-0 vignette" />
 
-      <div className="pointer-events-none absolute inset-0">
+      <div className="pointer-events-none fixed inset-0">
         <div className="blob blob-a" style={{ top: '10%', left: '-10%' }} />
         <div className="blob blob-b" style={{ bottom: '5%', right: '-15%' }} />
         <div className="blob blob-c" style={{ top: '40%', left: '50%' }} />

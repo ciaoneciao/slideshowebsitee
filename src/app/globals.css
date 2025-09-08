@@ -23,7 +23,13 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
 }
+
+html, body { height: 100%; width: 100%; }
+
+*, *::before, *::after { box-sizing: border-box; }
 
 /* Custom scrollbar per theme scuro */
 ::-webkit-scrollbar {
@@ -242,4 +248,38 @@ section {
   background: rgba(0,0,0,0.55);
   box-shadow: 0 0 18px rgba(0,255,200,0.5), inset 0 0 18px rgba(0,255,200,0.35);
   transform: translateY(-1px);
+}
+
+/* Lofi / psychedelic titles */
+.lofi-title {
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 6px rgba(255,255,255,0.6),
+    0 0 18px rgba(255,0,204,0.5),
+    0 0 36px rgba(0,255,255,0.45);
+  filter: drop-shadow(0 4px 24px rgba(0,0,0,0.6));
+}
+
+.lofi-subtitle {
+  text-shadow:
+    1px 0 0 rgba(255,70,70,0.6),
+    -1px 0 0 rgba(70,255,255,0.6),
+    0 0 10px rgba(255,255,255,0.35);
+}
+
+.floaty {
+  animation: floaty 6s ease-in-out infinite;
+}
+
+@keyframes floaty {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(0.3deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+/* Mobile viewport fix */
+.vh-100 {
+  height: 100vh;
+  height: 100svh;
 }
