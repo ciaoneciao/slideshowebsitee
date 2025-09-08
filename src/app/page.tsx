@@ -209,42 +209,49 @@ export default function Home() {
 
 function SlideThree({ onBack, onContinue }: { onBack: () => void; onContinue: () => void }) {
   const [showForm, setShowForm] = useState(false);
+  const [animDone, setAnimDone] = useState(false);
   const [method, setMethod] = useState<"paypal" | "bonifico" | "revolut">("paypal");
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-8 px-4">
       {!showForm ? (
         <>
-          <h3 className="text-center text-3xl sm:text-4xl md:text-5xl font-bold neon-text lofi-title">Costs Recap</h3>
-          <CostsAnimator onFinished={() => setShowForm(true)} />
-          <div className="text-center">
-            <button onClick={() => setShowForm(true)} className="btn-neon px-6 py-3 rounded-md font-semibold">Go to payment</button>
+          <h3 className="text-center text-4xl sm:text-5xl md:text-6xl font-extrabold neon-text lofi-title gradient-accent">
+            Costs Recap
+          </h3>
+          <CostsAnimator onFinished={() => setAnimDone(true)} />
+          <div className="text-center mt-4">
+            <button disabled={!animDone} onClick={() => setShowForm(true)} className="btn-neon px-8 py-3 rounded-md font-semibold" style={{ opacity: animDone ? 1 : 0.5 }}>
+              Proceed to payment
+            </button>
           </div>
         </>
       ) : (
         <>
-          <h3 className="text-center text-3xl sm:text-4xl md:text-5xl font-bold neon-text lofi-title">Metodo di pagamento</h3>
+          <h3 className="text-center text-4xl sm:text-5xl md:text-6xl font-extrabold neon-text lofi-title gradient-accent">
+            Payment method
+          </h3>
           {/* Visible form */}
           <form name="payment" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/success" className="space-y-5 bg-black/35 backdrop-blur-sm px-5 py-6 rounded-lg">
             <input type="hidden" name="form-name" value="payment" />
-            <p className="hidden">
+            <p hidden aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
               <label>
-                Don’t fill this out: <input name="bot-field" />
+                Leave this field blank: <input name="bot-field" />
               </label>
             </p>
 
             <div className="space-y-3">
-              <label className="block text-sm opacity-90">Metodo</label>
+              <label className="block text-sm opacity-90">Payment Method</label>
               <div className="flex gap-4 flex-wrap">
                 <label className="flex items-center gap-2"><input type="radio" name="method" value="paypal" checked={method === 'paypal'} onChange={() => setMethod('paypal')} /> PayPal</label>
-                <label className="flex items-center gap-2"><input type="radio" name="method" value="bonifico" checked={method === 'bonifico'} onChange={() => setMethod('bonifico')} /> Bonifico</label>
+                <label className="flex items-center gap-2"><input type="radio" name="method" value="bonifico" checked={method === 'bonifico'} onChange={() => setMethod('bonifico')} /> Bank transfer</label>
                 <label className="flex items-center gap-2"><input type="radio" name="method" value="revolut" checked={method === 'revolut'} onChange={() => setMethod('revolut')} /> Revolut</label>
               </div>
             </div>
 
             {method === 'paypal' && (
               <div className="space-y-2">
-                <label className="block text-sm">Indirizzo PayPal</label>
+                <label className="block text-sm">PayPal Address</label>
                 <input name="paypal_email" type="email" required className="w-full px-3 py-2 rounded bg-white/90 text-black" placeholder="name@example.com" />
               </div>
             )}
@@ -252,15 +259,15 @@ function SlideThree({ onBack, onContinue }: { onBack: () => void; onContinue: ()
             {method === 'bonifico' && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-2">
-                  <label className="block text-sm">Intestatario</label>
-                  <input name="account_name" type="text" required className="w-full px-3 py-2 rounded bg-white/90 text-black" placeholder="Nome e Cognome" />
+                  <label className="block text-sm">Account Holder</label>
+                  <input name="account_name" type="text" required className="w-full px-3 py-2 rounded bg-white/90 text-black" placeholder="Full name" />
                 </div>
                 <div className="space-y-2">
                   <label className="block text-sm">IBAN</label>
                   <input name="iban" type="text" required className="w-full px-3 py-2 rounded bg-white/90 text-black" placeholder="IT00 A123 4567 8901 2345 6789 012" />
                 </div>
                 <div className="space-y-2 sm:col-span-2">
-                  <label className="block text-sm">BIC / SWIFT (opzionale)</label>
+                  <label className="block text-sm">BIC / SWIFT (optional)</label>
                   <input name="bic" type="text" className="w-full px-3 py-2 rounded bg-white/90 text-black" placeholder="ABCDEFGH" />
                 </div>
               </div>
@@ -268,14 +275,14 @@ function SlideThree({ onBack, onContinue }: { onBack: () => void; onContinue: ()
 
             {method === 'revolut' && (
               <div className="space-y-2">
-                <label className="block text-sm">Telefono Revolut</label>
+                <label className="block text-sm">Revolut Phone</label>
                 <input name="revolut_phone" type="tel" required className="w-full px-3 py-2 rounded bg-white/90 text-black" placeholder="+39 333 123 4567" />
               </div>
             )}
 
             <div className="flex items-center justify-between gap-4 pt-2">
-              <button type="button" onClick={onBack} className="btn-neon px-4 py-2 rounded-md">Indietro</button>
-              <button type="submit" className="btn-neon px-6 py-3 rounded-md font-semibold" onClick={() => setTimeout(onContinue, 100)}>Invia</button>
+              <button type="button" onClick={onBack} className="btn-neon px-4 py-2 rounded-md">Back</button>
+              <button type="submit" className="btn-neon px-6 py-3 rounded-md font-semibold" onClick={() => setTimeout(onContinue, 100)}>Send</button>
             </div>
           </form>
 
@@ -319,7 +326,9 @@ function SlideFive({ onBack, onContinue }: { onBack: () => void; onContinue: () 
 
       <form name="spa" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/success" className="space-y-4 bg-black/35 backdrop-blur-sm px-5 py-6 rounded-lg">
         <input type="hidden" name="form-name" value="spa" />
-        <p className="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+        <p hidden aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
+          <label>Leave this field blank: <input name="bot-field" /></label>
+        </p>
 
         <div className="flex gap-6 items-center justify-center">
           <label className="flex items-center gap-2"><input type="radio" name="spa_ok" value="yes" checked={choice==='yes'} onChange={() => setChoice('yes')} /> Yes</label>
