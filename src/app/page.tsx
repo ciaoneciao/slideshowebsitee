@@ -28,7 +28,7 @@ function TypingText({ text, speed = 60, startDelay = 400 }: { text: string; spee
   return <span>{displayed}</span>;
 }
 
-type Step = 1 | 2 | 3;
+type Step = 1 | 2 | 3 | 4 | 5 | 6;
 
 function CostsAnimator({ onFinished }: { onFinished: () => void }) {
   const items = useMemo(() => (
@@ -43,7 +43,6 @@ function CostsAnimator({ onFinished }: { onFinished: () => void }) {
   const [currentValue, setCurrentValue] = useState(0);
   const [accumulated, setAccumulated] = useState<number[]>([]);
   const total = accumulated.reduce((s, n) => s + n, 0) + (items[index]?.amount ? currentValue : 0);
-  const perPerson = total / 2;
 
   useEffect(() => {
     let cancelled = false;
@@ -74,25 +73,32 @@ function CostsAnimator({ onFinished }: { onFinished: () => void }) {
   }, [index, items, onFinished]);
 
   return (
-    <div className="space-y-4 text-left max-w-md w-full mx-auto bg-black/35 backdrop-blur-sm px-5 py-4 rounded-lg">
+    <div
+      className="space-y-4 text-left max-w-md w-full mx-auto bg-black/35 backdrop-blur-sm px-5 py-4 rounded-lg"
+      style={{ maxWidth: 520 }}
+    >
       {items.map((it, i) => {
         const shown = i < index ? items[i].amount : (i === index ? currentValue : 0);
         const isPast = i < index;
         return (
-          <div key={it.label} className={`flex items-baseline justify-between ${isPast ? 'opacity-80' : ''}`}>
+          <div
+            key={it.label}
+            className={isPast ? '' : ''}
+            style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', opacity: isPast ? 0.9 : 1 }}
+          >
             <span className="lofi-subtitle text-lg sm:text-xl">{it.label}</span>
             <span className="neon-text text-2xl sm:text-3xl font-semibold">{Math.round(shown)}</span>
           </div>
         );
       })}
       <div className="h-px w-full bg-white/20 my-2" />
-      <div className="flex items-baseline justify-between">
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
         <span className="lofi-title text-xl">Total</span>
         <span className="neon-text text-3xl sm:text-4xl font-bold">{Math.round(total)}</span>
       </div>
-      <div className="flex items-baseline justify-between">
-        <span className="lofi-subtitle">Diviso 2</span>
-        <span className="neon-text text-2xl font-bold">{Math.round(perPerson)}</span>
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
+        <span className="lofi-subtitle">To be split by 2</span>
+        <span className="neon-text text-2xl font-bold">× 1/2</span>
       </div>
     </div>
   );
@@ -100,13 +106,18 @@ function CostsAnimator({ onFinished }: { onFinished: () => void }) {
 
 export default function Home() {
   const [step, setStep] = useState<Step>(1);
+  const containerStyle: React.CSSProperties = { position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden' };
+  const videoStyle: React.CSSProperties = { position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' };
+  const overlayStyle: React.CSSProperties = { position: 'relative', zIndex: 10, width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '24px' };
+  const neonStyle: React.CSSProperties = { textShadow: '0 0 6px rgba(255,255,255,0.6), 0 0 14px rgba(0,255,170,0.6), 0 0 28px rgba(0,150,255,0.5)' };
 
   return (
-    <main className="relative w-screen vh-100 overflow-hidden psy-hue">
+    <main className="relative w-screen vh-100 overflow-hidden psy-hue" style={containerStyle}>
       {/* Background video */}
       {step === 1 ? (
         <video
           className="fixed inset-0 w-full h-full object-cover video-zoom"
+          style={videoStyle}
           src="/videos/oland1.mp4"
           autoPlay
           muted
@@ -116,6 +127,17 @@ export default function Home() {
       ) : step === 2 ? (
         <video
           className="fixed inset-0 w-full h-full object-cover video-zoom"
+          style={videoStyle}
+          src="/videos/poland2.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+      ) : step === 3 || step === 4 ? (
+        <video
+          className="fixed inset-0 w-full h-full object-cover video-zoom"
+          style={videoStyle}
           src="/videos/poland2.mp4"
           autoPlay
           muted
@@ -125,7 +147,8 @@ export default function Home() {
       ) : (
         <video
           className="fixed inset-0 w-full h-full object-cover video-zoom"
-          src="/videos/poland2.mp4"
+          style={videoStyle}
+          src="/videos/poland3.mp4"
           autoPlay
           muted
           loop
@@ -134,10 +157,10 @@ export default function Home() {
       )}
 
       {/* Overlay content */}
-      <div className="relative z-10 flex flex-col items-center justify-center w-full h-full text-center px-6">
+      <div className="relative z-10 flex flex-col items-center justify-center w-full h-full text-center px-6" style={overlayStyle}>
         {step === 1 ? (
           <div className="space-y-10">
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-wide neon-text rgb-shift lofi-title floaty">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-wide neon-text rgb-shift lofi-title floaty" style={neonStyle}>
               POLAND TRIP LOADING <span className="loading-dots"/>
             </h1>
             <button
@@ -150,7 +173,7 @@ export default function Home() {
           </div>
         ) : step === 2 ? (
           <div className="space-y-6">
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold neon-text rgb-shift lofi-subtitle floaty">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold neon-text rgb-shift lofi-subtitle floaty" style={neonStyle}>
               <TypingText text="MY PREFERENCE IS: ..... Gdansk!!" />
             </h2>
             <button
@@ -160,8 +183,14 @@ export default function Home() {
               Continue
             </button>
           </div>
+        ) : step === 3 ? (
+          <SlideThree onBack={() => setStep(2)} onContinue={() => setStep(4)} />
+        ) : step === 4 ? (
+          <SlideFour onBack={() => setStep(3)} onContinue={() => setStep(5)} />
+        ) : step === 5 ? (
+          <SlideFive onBack={() => setStep(4)} onContinue={() => setStep(6)} />
         ) : (
-          <SlideThree onBack={() => setStep(2)} />
+          <SlideSix onBack={() => setStep(5)} />
         )}
       </div>
 
@@ -178,7 +207,7 @@ export default function Home() {
   );
 }
 
-function SlideThree({ onBack }: { onBack: () => void }) {
+function SlideThree({ onBack, onContinue }: { onBack: () => void; onContinue: () => void }) {
   const [showForm, setShowForm] = useState(false);
   const [method, setMethod] = useState<"paypal" | "bonifico" | "revolut">("paypal");
 
@@ -246,7 +275,7 @@ function SlideThree({ onBack }: { onBack: () => void }) {
 
             <div className="flex items-center justify-between gap-4 pt-2">
               <button type="button" onClick={onBack} className="btn-neon px-4 py-2 rounded-md">Indietro</button>
-              <button type="submit" className="btn-neon px-6 py-3 rounded-md font-semibold">Invia</button>
+              <button type="submit" className="btn-neon px-6 py-3 rounded-md font-semibold" onClick={() => setTimeout(onContinue, 100)}>Invia</button>
             </div>
           </form>
 
@@ -262,6 +291,72 @@ function SlideThree({ onBack }: { onBack: () => void }) {
           </form>
         </>
       )}
+    </div>
+  );
+}
+
+function SlideFour({ onBack, onContinue }: { onBack: () => void; onContinue: () => void }) {
+  return (
+    <div className="w-full max-w-2xl mx-auto space-y-8 px-4">
+      <h3 className="text-center text-3xl sm:text-4xl md:text-5xl font-bold neon-text lofi-title">W33d money</h3>
+      <p className="text-center text-lg sm:text-xl lofi-subtitle">
+        W33d money will be stealthy sent as 4th hotel payment gvng gvng.
+      </p>
+      <div className="flex items-center justify-center gap-4">
+        <button onClick={onBack} className="btn-neon px-4 py-2 rounded-md">Back</button>
+        <button onClick={onContinue} className="btn-neon px-6 py-3 rounded-md font-semibold">Next</button>
+      </div>
+    </div>
+  );
+}
+
+function SlideFive({ onBack, onContinue }: { onBack: () => void; onContinue: () => void }) {
+  const [choice, setChoice] = useState<'yes' | 'no'>('yes');
+  return (
+    <div className="w-full max-w-2xl mx-auto space-y-6 px-4">
+      <h3 className="text-center text-3xl sm:text-4xl md:text-5xl font-bold neon-text lofi-title">Spa session?</h3>
+      <p className="text-center lofi-subtitle">Will it be possible to hit the spa?</p>
+
+      <form name="spa" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/success" className="space-y-4 bg-black/35 backdrop-blur-sm px-5 py-6 rounded-lg">
+        <input type="hidden" name="form-name" value="spa" />
+        <p className="hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+
+        <div className="flex gap-6 items-center justify-center">
+          <label className="flex items-center gap-2"><input type="radio" name="spa_ok" value="yes" checked={choice==='yes'} onChange={() => setChoice('yes')} /> Yes</label>
+          <label className="flex items-center gap-2"><input type="radio" name="spa_ok" value="no" checked={choice==='no'} onChange={() => setChoice('no')} /> No</label>
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm">Any additional notes?</label>
+          <textarea name="notes" rows={4} className="w-full px-3 py-2 rounded bg-white/90 text-black" placeholder="Drop your notes here..." />
+        </div>
+
+        <div className="flex items-center justify-between gap-4 pt-2">
+          <button type="button" onClick={onBack} className="btn-neon px-4 py-2 rounded-md">Back</button>
+          <button type="submit" className="btn-neon px-6 py-3 rounded-md font-semibold" onClick={() => setTimeout(onContinue, 100)}>Next</button>
+        </div>
+      </form>
+
+      <form name="spa" data-netlify="true" netlify-honeypot="bot-field" hidden>
+        <input type="hidden" name="form-name" value="spa" />
+        <input name="spa_ok" />
+        <textarea name="notes" />
+      </form>
+    </div>
+  );
+}
+
+function SlideSix({ onBack }: { onBack: () => void }) {
+  return (
+    <div className="w-full max-w-3xl mx-auto space-y-8 px-4 text-center">
+      <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold neon-text lofi-title">One more spa day?</h3>
+      <p className="lofi-subtitle text-xl">
+        Could we slide for a day to those crazy dope thermal baths you showed me?
+        I heard Poland got some fire ones.
+      </p>
+      <div className="flex items-center justify-center">
+        <button onClick={onBack} className="btn-neon px-6 py-3 rounded-md font-semibold">Back</button>
+      </div>
     </div>
   );
 }
