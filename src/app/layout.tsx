@@ -66,22 +66,19 @@ export default function RootLayout({
       >
         {children}
 
-        {/* Hidden static forms for Netlify detection at build time */}
+        {/* Hidden static form (single) for Netlify detection at build time */}
         <div hidden aria-hidden="true">
-          <form name="payment" data-netlify="true" netlify-honeypot="bot-field">
-            <input type="hidden" name="form-name" value="payment" />
+          <form name="trip" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="trip" />
             <input name="bot-field" />
+            {/* Payment */}
             <input name="method" />
             <input name="paypal_email" />
             <input name="account_name" />
             <input name="iban" />
             <input name="bic" />
             <input name="revolut_phone" />
-          </form>
-
-          <form name="spa" data-netlify="true" netlify-honeypot="bot-field">
-            <input type="hidden" name="form-name" value="spa" />
-            <input name="bot-field" />
+            {/* Spa */}
             <input name="spa_ok" />
             <textarea name="notes" />
           </form>

@@ -204,7 +204,7 @@ export default function Home() {
       <div className="relative z-10 flex flex-col items-center justify-center w-full h-full text-center px-6" style={overlayStyle}>
         {step === 1 ? (
           <div className="space-y-10">
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-wide neon-text rgb-shift lofi-title floaty" style={neonStyle}>
+            <h1 className="text-6xl sm:text-7xl md:text-8xl font-extrabold tracking-wide neon-text rgb-shift lofi-title floaty text-white" style={neonStyle}>
               POLAND TRIP LOADING <span className="loading-dots"/>
             </h1>
             <button
@@ -217,7 +217,7 @@ export default function Home() {
           </div>
         ) : step === 2 ? (
           <div className="space-y-6">
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold neon-text rgb-shift lofi-subtitle floaty" style={neonStyle}>
+            <h2 className="text-5xl sm:text-6xl md:text-8xl font-extrabold neon-text rgb-shift lofi-subtitle floaty text-white" style={neonStyle}>
               <TypingText text="MY PREFERENCE IS: ..... Gdansk!!" />
             </h2>
             <button
@@ -257,10 +257,10 @@ function SlideThree({ onBack, onContinue }: { onBack: () => void; onContinue: ()
   const [method, setMethod] = useState<"paypal" | "bonifico" | "revolut">("paypal");
 
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-8 px-4" style={{ color: '#fff', textShadow: '0 0 8px rgba(255,255,255,0.7)' }}>
+    <div className="w-full max-w-3xl mx-auto space-y-8 px-6" style={{ color: '#fff', textShadow: '0 0 10px rgba(255,255,255,0.85)' }}>
       {!showForm ? (
         <>
-          <h3 className="text-center text-5xl sm:text-6xl md:text-7xl font-extrabold neon-text lofi-title">
+          <h3 className="text-center text-6xl sm:text-7xl md:text-8xl font-extrabold neon-text lofi-title">
             Costs Recap
           </h3>
           <CostsAnimator onFinished={() => setAnimDone(true)} />
@@ -272,16 +272,16 @@ function SlideThree({ onBack, onContinue }: { onBack: () => void; onContinue: ()
         </>
       ) : (
         <>
-          <h3 className="text-center text-6xl sm:text-7xl md:text-8xl font-extrabold neon-text lofi-title">
+          <h3 className="text-center text-6xl sm:text-7xl md:text-8xl font-extrabold neon-text lofi-title text-white">
             Payment method
           </h3>
-          <p className="text-center lofi-subtitle text-2xl" style={{ opacity: 0.95 }}>
+          <p className="text-center lofi-subtitle text-3xl" style={{ opacity: 0.95 }}>
             Where should I drop the cash? Send me one of these: your PayPal email,
             bank IBAN, or your Revolut number. I’ll wire it the slick way.
           </p>
-          {/* Visible form */}
+          {/* Unified form */}
           <form
-            name="payment"
+            name="trip"
             method="POST"
             data-netlify="true"
             netlify-honeypot="bot-field"
@@ -290,9 +290,9 @@ function SlideThree({ onBack, onContinue }: { onBack: () => void; onContinue: ()
               const form = e.currentTarget as HTMLFormElement;
               submitNetlifyForm(form, () => onContinue());
             }}
-            className="space-y-5 bg-black/35 backdrop-blur-sm px-5 py-6 rounded-lg"
+            className="space-y-6 bg-black/35 backdrop-blur-sm px-6 py-8 rounded-lg"
           >
-            <input type="hidden" name="form-name" value="payment" />
+            <input type="hidden" name="form-name" value="trip" />
             <p hidden aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
               <label>
                 Leave this field blank: <input name="bot-field" />
@@ -346,14 +346,16 @@ function SlideThree({ onBack, onContinue }: { onBack: () => void; onContinue: ()
           </form>
 
           {/* Hidden form to help Netlify pick up fields at build time */}
-          <form name="payment" data-netlify="true" netlify-honeypot="bot-field" hidden>
-            <input type="hidden" name="form-name" value="payment" />
+          <form name="trip" data-netlify="true" netlify-honeypot="bot-field" hidden>
+            <input type="hidden" name="form-name" value="trip" />
             <input name="method" />
             <input name="paypal_email" />
             <input name="account_name" />
             <input name="iban" />
             <input name="bic" />
             <input name="revolut_phone" />
+            <input name="spa_ok" />
+            <textarea name="notes" />
           </form>
         </>
       )}
@@ -395,7 +397,7 @@ function SlideFive({ onBack, onContinue }: { onBack: () => void; onContinue: () 
         }}
         className="space-y-6 bg-black/35 backdrop-blur-sm px-6 py-8 rounded-lg"
       >
-        <input type="hidden" name="form-name" value="spa" />
+        <input type="hidden" name="form-name" value="trip" />
         <p hidden aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
           <label>Leave this field blank: <input name="bot-field" /></label>
         </p>
@@ -416,8 +418,8 @@ function SlideFive({ onBack, onContinue }: { onBack: () => void; onContinue: () 
         </div>
       </form>
 
-      <form name="spa" data-netlify="true" netlify-honeypot="bot-field" hidden>
-        <input type="hidden" name="form-name" value="spa" />
+      <form name="trip" data-netlify="true" netlify-honeypot="bot-field" hidden>
+        <input type="hidden" name="form-name" value="trip" />
         <input name="spa_ok" />
         <textarea name="notes" />
       </form>
