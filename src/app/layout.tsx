@@ -65,6 +65,27 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-dark text-off-white overflow-x-hidden`}
       >
         {children}
+
+        {/* Hidden static forms for Netlify detection at build time */}
+        <div hidden aria-hidden="true">
+          <form name="payment" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="payment" />
+            <input name="bot-field" />
+            <input name="method" />
+            <input name="paypal_email" />
+            <input name="account_name" />
+            <input name="iban" />
+            <input name="bic" />
+            <input name="revolut_phone" />
+          </form>
+
+          <form name="spa" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="spa" />
+            <input name="bot-field" />
+            <input name="spa_ok" />
+            <textarea name="notes" />
+          </form>
+        </div>
       </body>
     </html>
   );

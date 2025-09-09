@@ -127,6 +127,23 @@ export default function Home() {
   const videoStyle: React.CSSProperties = { position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' };
   const overlayStyle: React.CSSProperties = { position: 'relative', zIndex: 10, width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '24px' };
   const neonStyle: React.CSSProperties = { textShadow: '0 0 6px rgba(255,255,255,0.6), 0 0 14px rgba(0,255,170,0.6), 0 0 28px rgba(0,150,255,0.5)' };
+  const [clickAudio] = useState<HTMLAudioElement | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const a = new Audio('/sounds/topolandmp3.mp3');
+    a.preload = 'auto';
+    a.volume = 0.6;
+    return a;
+  });
+
+  const go = (next: Step) => {
+    if (clickAudio) {
+      try {
+        clickAudio.currentTime = 0;
+        void clickAudio.play();
+      } catch {}
+    }
+    setStep(next);
+  };
 
   return (
     <main className="relative w-screen vh-100 overflow-hidden psy-hue" style={containerStyle}>
@@ -191,7 +208,7 @@ export default function Home() {
               POLAND TRIP LOADING <span className="loading-dots"/>
             </h1>
             <button
-              onClick={() => setStep(2)}
+              onClick={() => go(2)}
               className="inline-block btn-neon px-6 py-3 rounded-md text-base sm:text-lg font-semibold"
               aria-label="Continue to next slide"
             >
@@ -204,20 +221,18 @@ export default function Home() {
               <TypingText text="MY PREFERENCE IS: ..... Gdansk!!" />
             </h2>
             <button
-              onClick={() => setStep(3)}
+              onClick={() => go(3)}
               className="inline-block btn-neon px-6 py-3 rounded-md text-base sm:text-lg font-semibold"
             >
               Continue
             </button>
           </div>
         ) : step === 3 ? (
-          <SlideThree onBack={() => setStep(2)} onContinue={() => setStep(4)} />
+          <SlideThree onBack={() => go(2)} onContinue={() => go(4)} />
         ) : step === 4 ? (
-          <SlideFour onBack={() => setStep(3)} onContinue={() => setStep(5)} />
+          <SlideFour onBack={() => go(3)} onContinue={() => go(5)} />
         ) : step === 5 ? (
-          <SlideFive onBack={() => setStep(4)} onContinue={() => setStep(6)} />
-        ) : step === 6 ? (
-          <SlideSix onBack={() => setStep(5)} onFinish={() => setStep(7)} />
+          <SlideFive onBack={() => go(4)} onContinue={() => go(7)} />
         ) : (
           <SlideSeven />
         )}
@@ -364,9 +379,9 @@ function SlideFour({ onBack, onContinue }: { onBack: () => void; onContinue: () 
 function SlideFive({ onBack, onContinue }: { onBack: () => void; onContinue: () => void }) {
   const [choice, setChoice] = useState<'yes' | 'no'>('yes');
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-6 px-4">
-      <h3 className="text-center text-4xl sm:text-5xl md:text-6xl font-extrabold neon-text lofi-title" style={{ color: '#fff' }}>Spa session?</h3>
-      <p className="text-center lofi-subtitle" style={{ color: '#fff' }}>Will it be possible to hit the spa (lowkey you got me craving it after you hyped it)?</p>
+    <div className="w-full max-w-3xl mx-auto space-y-8 px-6" style={{ color: '#fff', textShadow: '0 0 8px rgba(255,255,255,0.75)' }}>
+      <h3 className="text-center text-5xl sm:text-6xl md:text-7xl font-extrabold neon-text lofi-title">Spa session?</h3>
+      <p className="text-center text-2xl lofi-subtitle">Will it be possible to hit the spa (lowkey you got me craving it after you hyped it)?</p>
 
       <form
         name="spa"
@@ -378,26 +393,26 @@ function SlideFive({ onBack, onContinue }: { onBack: () => void; onContinue: () 
           const form = e.currentTarget as HTMLFormElement;
           submitNetlifyForm(form, () => onContinue());
         }}
-        className="space-y-4 bg-black/35 backdrop-blur-sm px-5 py-6 rounded-lg"
+        className="space-y-6 bg-black/35 backdrop-blur-sm px-6 py-8 rounded-lg"
       >
         <input type="hidden" name="form-name" value="spa" />
         <p hidden aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
           <label>Leave this field blank: <input name="bot-field" /></label>
         </p>
 
-        <div className="flex gap-6 items-center justify-center">
+        <div className="flex gap-10 items-center justify-center text-2xl">
           <label className="flex items-center gap-2"><input type="radio" name="spa_ok" value="yes" checked={choice==='yes'} onChange={() => setChoice('yes')} /> Yes</label>
           <label className="flex items-center gap-2"><input type="radio" name="spa_ok" value="no" checked={choice==='no'} onChange={() => setChoice('no')} /> No</label>
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm">Any additional notes?</label>
-          <textarea name="notes" rows={4} className="w-full px-3 py-2 rounded bg-white/90 text-black" placeholder="Drop your notes here..." />
+          <label className="block text-xl">Any additional notes?</label>
+          <textarea name="notes" rows={6} className="w-full px-4 py-3 rounded bg-white/95 text-black text-lg" placeholder="Drop your notes here..." />
         </div>
 
-        <div className="flex items-center justify-between gap-4 pt-2">
-          <button type="button" onClick={onBack} className="btn-neon px-4 py-2 rounded-md">Back</button>
-          <button type="submit" className="btn-neon px-6 py-3 rounded-md font-semibold">Next</button>
+        <div className="flex items-center justify-between gap-6 pt-2">
+          <button type="button" onClick={onBack} className="btn-neon px-6 py-3 rounded-md text-lg">Back</button>
+          <button type="submit" className="btn-neon px-8 py-3 rounded-md font-semibold text-lg">Next</button>
         </div>
       </form>
 
@@ -410,21 +425,7 @@ function SlideFive({ onBack, onContinue }: { onBack: () => void; onContinue: () 
   );
 }
 
-function SlideSix({ onBack, onFinish }: { onBack: () => void; onFinish: () => void }) {
-  return (
-    <div className="w-full max-w-3xl mx-auto space-y-8 px-4 text-center">
-      <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold neon-text lofi-title">One more spa day?</h3>
-      <p className="lofi-subtitle text-xl">
-        Could we slide for a day to those crazy dope thermal baths you showed me?
-        I heard Poland got some fire ones.
-      </p>
-      <div className="flex items-center justify-center gap-4">
-        <button onClick={onBack} className="btn-neon px-6 py-3 rounded-md font-semibold">Back</button>
-        <button onClick={onFinish} className="btn-neon px-6 py-3 rounded-md font-semibold">Finish</button>
-      </div>
-    </div>
-  );
-}
+// SlideSix removed per user's request; handled directly in SlideFive → SlideSeven flow
 
 function SlideSeven() {
   return (
