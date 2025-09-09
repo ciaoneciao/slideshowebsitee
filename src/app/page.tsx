@@ -91,8 +91,8 @@ function CostsAnimator({ onFinished }: { onFinished: () => void }) {
 
   return (
     <div
-      className="space-y-4 text-left max-w-md w-full mx-auto bg-black/35 backdrop-blur-sm px-5 py-4 rounded-lg"
-      style={{ maxWidth: 520 }}
+      className="space-y-5 text-left max-w-3xl w-full mx-auto bg-black/35 backdrop-blur-sm px-6 py-6 rounded-lg"
+      style={{ maxWidth: 880, color: '#fff', textShadow: '0 0 8px rgba(255,255,255,0.7)' }}
     >
       {items.map((it, i) => {
         const shown = i < index ? items[i].amount : (i === index ? currentValue : 0);
@@ -103,19 +103,19 @@ function CostsAnimator({ onFinished }: { onFinished: () => void }) {
             className={isPast ? '' : ''}
             style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', opacity: isPast ? 0.9 : 1 }}
           >
-            <span className="lofi-subtitle text-lg sm:text-xl">{it.label}</span>
-            <span className="neon-text text-2xl sm:text-3xl font-semibold">{Math.round(shown)}</span>
+            <span className="lofi-subtitle text-2xl sm:text-3xl">{it.label}</span>
+            <span className="neon-text text-4xl sm:text-5xl font-bold">{Math.round(shown)}</span>
           </div>
         );
       })}
       <div className="h-px w-full bg-white/20 my-2" />
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-        <span className="lofi-title text-xl">Total</span>
-        <span className="neon-text text-3xl sm:text-4xl font-bold">{Math.round(total)}</span>
+        <span className="lofi-title text-3xl">Total</span>
+        <span className="neon-text text-5xl sm:text-6xl font-extrabold">{Math.round(total)}</span>
       </div>
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-        <span className="lofi-subtitle">To be split by 2</span>
-        <span className="neon-text text-2xl font-bold">× 1/2</span>
+        <span className="lofi-subtitle text-2xl">To be split by 2</span>
+        <span className="neon-text text-3xl font-bold">× 1/2</span>
       </div>
     </div>
   );
@@ -272,10 +272,10 @@ function SlideThree({ onBack, onContinue }: { onBack: () => void; onContinue: ()
         </>
       ) : (
         <>
-          <h3 className="text-center text-5xl sm:text-6xl md:text-7xl font-extrabold neon-text lofi-title">
+          <h3 className="text-center text-6xl sm:text-7xl md:text-8xl font-extrabold neon-text lofi-title">
             Payment method
           </h3>
-          <p className="text-center lofi-subtitle" style={{ opacity: 0.95 }}>
+          <p className="text-center lofi-subtitle text-2xl" style={{ opacity: 0.95 }}>
             Where should I drop the cash? Send me one of these: your PayPal email,
             bank IBAN, or your Revolut number. I’ll wire it the slick way.
           </p>
@@ -300,8 +300,8 @@ function SlideThree({ onBack, onContinue }: { onBack: () => void; onContinue: ()
             </p>
 
             <div className="space-y-3">
-              <label className="block text-sm opacity-90">Where do I send it?</label>
-              <div className="flex gap-4 flex-wrap">
+              <label className="block text-xl opacity-90">Where do I send it?</label>
+              <div className="flex gap-6 flex-wrap text-2xl">
                 <label className="flex items-center gap-2"><input type="radio" name="method" value="paypal" checked={method === 'paypal'} onChange={() => setMethod('paypal')} /> PayPal</label>
                 <label className="flex items-center gap-2"><input type="radio" name="method" value="bonifico" checked={method === 'bonifico'} onChange={() => setMethod('bonifico')} /> Bank transfer</label>
                 <label className="flex items-center gap-2"><input type="radio" name="method" value="revolut" checked={method === 'revolut'} onChange={() => setMethod('revolut')} /> Revolut</label>
@@ -310,32 +310,32 @@ function SlideThree({ onBack, onContinue }: { onBack: () => void; onContinue: ()
 
             {method === 'paypal' && (
               <div className="space-y-2">
-                <label className="block text-sm">PayPal Address</label>
-                <input name="paypal_email" type="email" required className="w-full px-3 py-2 rounded bg-white/90 text-black" placeholder="name@example.com" />
+                <label className="block text-xl">PayPal Address</label>
+                <input name="paypal_email" type="email" required className="w-full px-4 py-3 rounded bg-white/90 text-black text-lg" placeholder="name@example.com" />
               </div>
             )}
 
             {method === 'bonifico' && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-2">
-                  <label className="block text-sm">Account Holder</label>
-                  <input name="account_name" type="text" required className="w-full px-3 py-2 rounded bg-white/90 text-black" placeholder="Full name" />
+                  <label className="block text-xl">Account Holder</label>
+                  <input name="account_name" type="text" required className="w-full px-4 py-3 rounded bg-white/90 text-black text-lg" placeholder="Full name" />
                 </div>
                 <div className="space-y-2">
-                  <label className="block text-sm">IBAN</label>
-                  <input name="iban" type="text" required className="w-full px-3 py-2 rounded bg-white/90 text-black" placeholder="IT00 A123 4567 8901 2345 6789 012" />
+                  <label className="block text-xl">IBAN</label>
+                  <input name="iban" type="text" required className="w-full px-4 py-3 rounded bg-white/90 text-black text-lg" placeholder="IT00 A123 4567 8901 2345 6789 012" />
                 </div>
                 <div className="space-y-2 sm:col-span-2">
-                  <label className="block text-sm">BIC / SWIFT (optional)</label>
-                  <input name="bic" type="text" className="w-full px-3 py-2 rounded bg-white/90 text-black" placeholder="ABCDEFGH" />
+                  <label className="block text-xl">BIC / SWIFT (optional)</label>
+                  <input name="bic" type="text" className="w-full px-4 py-3 rounded bg-white/90 text-black text-lg" placeholder="ABCDEFGH" />
                 </div>
               </div>
             )}
 
             {method === 'revolut' && (
               <div className="space-y-2">
-                <label className="block text-sm">Revolut Phone</label>
-                <input name="revolut_phone" type="tel" required className="w-full px-3 py-2 rounded bg-white/90 text-black" placeholder="+39 333 123 4567" />
+                <label className="block text-xl">Revolut Phone</label>
+                <input name="revolut_phone" type="tel" required className="w-full px-4 py-3 rounded bg-white/90 text-black text-lg" placeholder="+39 333 123 4567" />
               </div>
             )}
 
