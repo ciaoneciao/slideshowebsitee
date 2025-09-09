@@ -13,22 +13,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "65lanta - Grammy-Nominated Producer & Audio Engineer",
-  description: "Precision. Passion. Innovation. 65lanta is Boyan '65' Stanchev - Grammy-winning producer and engineer who redefines sound. High-energy records with unmistakable depth.",
-  keywords: "65lanta, audio engineer, music producer, mix and mastering, sound designer, Grammy nominated, Atlanta, hip hop, trap, OctoGvng",
-  authors: [{ name: "65lanta" }],
-  creator: "65lanta",
+  title: "POLAAAAND",
+  description: "Psychedelic Poland trip slideshow.",
+  keywords: "poland trip, slideshow, travel, psychedelic",
+  authors: [{ name: "POLAAAAND" }],
+  creator: "POLAAAAND",
   openGraph: {
-    title: "65lanta - Grammy-Nominated Producer & Audio Engineer",
-    description: "Precision. Passion. Innovation. Grammy-winning producer and engineer who redefines sound.",
-    url: "https://65lanta.com",
-    siteName: "65lanta",
+    title: "POLAAAAND",
+    description: "Psychedelic Poland trip slideshow.",
+    url: "https://example.com",
+    siteName: "POLAAAAND",
     images: [
       {
         url: "/images/banner.jpeg",
         width: 1200,
         height: 630,
-        alt: "65lanta - Audio Engineer & Producer",
+        alt: "POLAAAAND",
       },
     ],
     locale: "en_US",
@@ -36,9 +36,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "65lanta - Grammy-Nominated Producer & Audio Engineer",
-    description: "Precision. Passion. Innovation. Grammy-winning producer and engineer who redefines sound.",
-    creator: "@65lanta",
+    title: "POLAAAAND",
+    description: "Psychedelic Poland trip slideshow.",
+    creator: "@polaaaand",
     images: ["/images/banner.jpeg"],
   },
   robots: {

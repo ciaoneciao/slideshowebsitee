@@ -30,6 +30,23 @@ function TypingText({ text, speed = 60, startDelay = 400 }: { text: string; spee
 
 type Step = 1 | 2 | 3 | 4 | 5 | 6;
 
+function submitNetlifyForm(form: HTMLFormElement, onDone: () => void) {
+  try {
+    const formData = new FormData(form);
+    const body = new URLSearchParams();
+    formData.forEach((value, key) => body.append(key, String(value)));
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: body.toString(),
+    })
+      .then(() => onDone())
+      .catch(() => onDone());
+  } catch {
+    onDone();
+  }
+}
+
 function CostsAnimator({ onFinished }: { onFinished: () => void }) {
   const items = useMemo(() => (
     [
@@ -232,7 +249,18 @@ function SlideThree({ onBack, onContinue }: { onBack: () => void; onContinue: ()
             Payment method
           </h3>
           {/* Visible form */}
-          <form name="payment" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/success" className="space-y-5 bg-black/35 backdrop-blur-sm px-5 py-6 rounded-lg">
+          <form
+            name="payment"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const form = e.currentTarget as HTMLFormElement;
+              submitNetlifyForm(form, () => onContinue());
+            }}
+            className="space-y-5 bg-black/35 backdrop-blur-sm px-5 py-6 rounded-lg"
+          >
             <input type="hidden" name="form-name" value="payment" />
             <p hidden aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
               <label>
@@ -282,7 +310,7 @@ function SlideThree({ onBack, onContinue }: { onBack: () => void; onContinue: ()
 
             <div className="flex items-center justify-between gap-4 pt-2">
               <button type="button" onClick={onBack} className="btn-neon px-4 py-2 rounded-md">Back</button>
-              <button type="submit" className="btn-neon px-6 py-3 rounded-md font-semibold" onClick={() => setTimeout(onContinue, 100)}>Send</button>
+              <button type="submit" className="btn-neon px-6 py-3 rounded-md font-semibold">Send</button>
             </div>
           </form>
 
@@ -324,7 +352,18 @@ function SlideFive({ onBack, onContinue }: { onBack: () => void; onContinue: () 
       <h3 className="text-center text-3xl sm:text-4xl md:text-5xl font-bold neon-text lofi-title">Spa session?</h3>
       <p className="text-center lofi-subtitle">Will it be possible to hit the spa?</p>
 
-      <form name="spa" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/success" className="space-y-4 bg-black/35 backdrop-blur-sm px-5 py-6 rounded-lg">
+      <form
+        name="spa"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        onSubmit={(e) => {
+          e.preventDefault();
+          const form = e.currentTarget as HTMLFormElement;
+          submitNetlifyForm(form, () => onContinue());
+        }}
+        className="space-y-4 bg-black/35 backdrop-blur-sm px-5 py-6 rounded-lg"
+      >
         <input type="hidden" name="form-name" value="spa" />
         <p hidden aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
           <label>Leave this field blank: <input name="bot-field" /></label>
@@ -342,7 +381,7 @@ function SlideFive({ onBack, onContinue }: { onBack: () => void; onContinue: () 
 
         <div className="flex items-center justify-between gap-4 pt-2">
           <button type="button" onClick={onBack} className="btn-neon px-4 py-2 rounded-md">Back</button>
-          <button type="submit" className="btn-neon px-6 py-3 rounded-md font-semibold" onClick={() => setTimeout(onContinue, 100)}>Next</button>
+          <button type="submit" className="btn-neon px-6 py-3 rounded-md font-semibold">Next</button>
         </div>
       </form>
 
