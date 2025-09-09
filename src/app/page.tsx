@@ -28,7 +28,7 @@ function TypingText({ text, speed = 60, startDelay = 400 }: { text: string; spee
   return <span>{displayed}</span>;
 }
 
-type Step = 1 | 2 | 3 | 4 | 5 | 6;
+type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 function submitNetlifyForm(form: HTMLFormElement, onDone: () => void) {
   try {
@@ -161,11 +161,21 @@ export default function Home() {
           loop
           playsInline
         />
-      ) : (
+      ) : step === 5 || step === 6 ? (
         <video
           className="fixed inset-0 w-full h-full object-cover video-zoom"
           style={videoStyle}
           src="/videos/poland3.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+      ) : (
+        <video
+          className="fixed inset-0 w-full h-full object-cover video-zoom"
+          style={videoStyle}
+          src="/videos/oland1.mp4"
           autoPlay
           muted
           loop
@@ -206,8 +216,10 @@ export default function Home() {
           <SlideFour onBack={() => setStep(3)} onContinue={() => setStep(5)} />
         ) : step === 5 ? (
           <SlideFive onBack={() => setStep(4)} onContinue={() => setStep(6)} />
+        ) : step === 6 ? (
+          <SlideSix onBack={() => setStep(5)} onFinish={() => setStep(7)} />
         ) : (
-          <SlideSix onBack={() => setStep(5)} />
+          <SlideSeven />
         )}
       </div>
 
@@ -230,10 +242,10 @@ function SlideThree({ onBack, onContinue }: { onBack: () => void; onContinue: ()
   const [method, setMethod] = useState<"paypal" | "bonifico" | "revolut">("paypal");
 
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-8 px-4">
+    <div className="w-full max-w-2xl mx-auto space-y-8 px-4" style={{ color: '#fff', textShadow: '0 0 8px rgba(255,255,255,0.7)' }}>
       {!showForm ? (
         <>
-          <h3 className="text-center text-4xl sm:text-5xl md:text-6xl font-extrabold neon-text lofi-title gradient-accent">
+          <h3 className="text-center text-5xl sm:text-6xl md:text-7xl font-extrabold neon-text lofi-title">
             Costs Recap
           </h3>
           <CostsAnimator onFinished={() => setAnimDone(true)} />
@@ -245,9 +257,13 @@ function SlideThree({ onBack, onContinue }: { onBack: () => void; onContinue: ()
         </>
       ) : (
         <>
-          <h3 className="text-center text-4xl sm:text-5xl md:text-6xl font-extrabold neon-text lofi-title gradient-accent">
+          <h3 className="text-center text-5xl sm:text-6xl md:text-7xl font-extrabold neon-text lofi-title">
             Payment method
           </h3>
+          <p className="text-center lofi-subtitle" style={{ opacity: 0.95 }}>
+            Where should I drop the cash? Send me one of these: your PayPal email,
+            bank IBAN, or your Revolut number. I’ll wire it the slick way.
+          </p>
           {/* Visible form */}
           <form
             name="payment"
@@ -269,7 +285,7 @@ function SlideThree({ onBack, onContinue }: { onBack: () => void; onContinue: ()
             </p>
 
             <div className="space-y-3">
-              <label className="block text-sm opacity-90">Payment Method</label>
+              <label className="block text-sm opacity-90">Where do I send it?</label>
               <div className="flex gap-4 flex-wrap">
                 <label className="flex items-center gap-2"><input type="radio" name="method" value="paypal" checked={method === 'paypal'} onChange={() => setMethod('paypal')} /> PayPal</label>
                 <label className="flex items-center gap-2"><input type="radio" name="method" value="bonifico" checked={method === 'bonifico'} onChange={() => setMethod('bonifico')} /> Bank transfer</label>
@@ -333,8 +349,8 @@ function SlideThree({ onBack, onContinue }: { onBack: () => void; onContinue: ()
 function SlideFour({ onBack, onContinue }: { onBack: () => void; onContinue: () => void }) {
   return (
     <div className="w-full max-w-2xl mx-auto space-y-8 px-4">
-      <h3 className="text-center text-3xl sm:text-4xl md:text-5xl font-bold neon-text lofi-title">W33d money</h3>
-      <p className="text-center text-lg sm:text-xl lofi-subtitle">
+      <h3 className="text-center text-4xl sm:text-5xl md:text-6xl font-extrabold neon-text lofi-title" style={{ color: '#fff' }}>W33d money</h3>
+      <p className="text-center text-xl sm:text-2xl lofi-subtitle" style={{ color: '#fff' }}>
         W33d money will be stealthy sent as 4th hotel payment gvng gvng.
       </p>
       <div className="flex items-center justify-center gap-4">
@@ -349,8 +365,8 @@ function SlideFive({ onBack, onContinue }: { onBack: () => void; onContinue: () 
   const [choice, setChoice] = useState<'yes' | 'no'>('yes');
   return (
     <div className="w-full max-w-2xl mx-auto space-y-6 px-4">
-      <h3 className="text-center text-3xl sm:text-4xl md:text-5xl font-bold neon-text lofi-title">Spa session?</h3>
-      <p className="text-center lofi-subtitle">Will it be possible to hit the spa?</p>
+      <h3 className="text-center text-4xl sm:text-5xl md:text-6xl font-extrabold neon-text lofi-title" style={{ color: '#fff' }}>Spa session?</h3>
+      <p className="text-center lofi-subtitle" style={{ color: '#fff' }}>Will it be possible to hit the spa (lowkey you got me craving it after you hyped it)?</p>
 
       <form
         name="spa"
@@ -394,7 +410,7 @@ function SlideFive({ onBack, onContinue }: { onBack: () => void; onContinue: () 
   );
 }
 
-function SlideSix({ onBack }: { onBack: () => void }) {
+function SlideSix({ onBack, onFinish }: { onBack: () => void; onFinish: () => void }) {
   return (
     <div className="w-full max-w-3xl mx-auto space-y-8 px-4 text-center">
       <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold neon-text lofi-title">One more spa day?</h3>
@@ -402,9 +418,19 @@ function SlideSix({ onBack }: { onBack: () => void }) {
         Could we slide for a day to those crazy dope thermal baths you showed me?
         I heard Poland got some fire ones.
       </p>
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center gap-4">
         <button onClick={onBack} className="btn-neon px-6 py-3 rounded-md font-semibold">Back</button>
+        <button onClick={onFinish} className="btn-neon px-6 py-3 rounded-md font-semibold">Finish</button>
       </div>
+    </div>
+  );
+}
+
+function SlideSeven() {
+  return (
+    <div className="w-full max-w-3xl mx-auto space-y-8 px-4 text-center" style={{ color: '#fff' }}>
+      <h3 className="text-5xl sm:text-6xl md:text-7xl font-extrabold neon-text lofi-title">THANKSSSS</h3>
+      <p className="lofi-subtitle">You’re the best travel buddy. Poland here we go.</p>
     </div>
   );
 }
